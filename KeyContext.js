@@ -27,12 +27,12 @@ export function KeyProvider({children}) {
     }, [])
     useEffect(async () => {
         const val = await SecureStore.getItemAsync("_ALL_KEYS");
-        console.log(val)
+        //console.log(val)
     }, [keyList])
 
     async function updateKey(value, type) {
         try {
-            console.log(type)
+            //console.log(type)
             switch (type) {
                 case "add":
                     const d = new Date()
@@ -41,15 +41,15 @@ export function KeyProvider({children}) {
                     await setKeyList(keyList.concat(d.getTime().toString()))
                     break;
                 case "remove":
-                    console.log(keyList)
-                    console.log(value)
+                    //console.log(keyList)
+                    //console.log(value)
                     await SecureStore.deleteItemAsync(value);
                     await setKeyList(keyList.filter(a => a != value))
                     await SecureStore.setItemAsync("_ALL_KEYS", JSON.stringify([...keyList.filter(a => a != value)]))
                     break;
             }
         } catch (e) {
-            console.log(e)
+            console.log (e)
         }
     }
 
