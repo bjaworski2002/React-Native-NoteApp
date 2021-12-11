@@ -5,7 +5,12 @@ export default function Add() {
     const keyUpdateTheme = useKeyUpdate()
     const [header, setHeader] = useState("")
     const [text, setText] = useState("")
-
+    const sendText = () => {
+        keyUpdateTheme(JSON.stringify({header: header, text: text}))
+        setHeader("")
+        setText("")
+        alert("Dodano notatkę!")
+    }
 /*    useEffect(() => {
         console.log(JSON.stringify({header: header, text: text}))
     }, [header, text])*/
@@ -20,7 +25,7 @@ export default function Add() {
                        multiline={true}
                        onChangeText={(text) => setText(text)}
             />
-            <Button title={"Button"} onPress={() => keyUpdateTheme(JSON.stringify({header: header, text: text}))}/>
+            <Button title={"Button"} onPress={() => sendText()}/>
         </View>
     );
 }
