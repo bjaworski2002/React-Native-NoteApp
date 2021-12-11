@@ -1,6 +1,8 @@
-import {Button, Text, TextInput, View} from "react-native";
+import {Button, Dimensions, Text, View} from "react-native";
+import { TextInput } from 'react-native-paper';
 import React, {useContext, useEffect, useState} from 'react'
 import {KeyProvider, useKeys, useKeyUpdate} from "../KeyContext";
+
 export default function Add() {
     const keyUpdateTheme = useKeyUpdate()
     const [header, setHeader] = useState("")
@@ -11,16 +13,19 @@ export default function Add() {
         setText("")
         alert("Dodano notatkę!")
     }
-/*    useEffect(() => {
-        console.log(JSON.stringify({header: header, text: text}))
-    }, [header, text])*/
+    /*    useEffect(() => {
+            console.log(JSON.stringify({header: header, text: text}))
+        }, [header, text])*/
     return (
-        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-            <TextInput style={{height: 80}}
-                       placeholder="Dodaj nagłówek notatki!"
+        <View style={{flex: 1}}>
+            <TextInput
+                       label={"Nagłówek"}
+                       type={'flat'}
+                       placeholder="Dodaj nagłowek!"
                        onChangeText={(text) => setHeader(text)}
             />
-            <TextInput style={{height: 80}}
+            <TextInput type={'flat'}
+                       label={"Tekst"}
                        placeholder="Dodaj tekst notatki!"
                        multiline={true}
                        onChangeText={(text) => setText(text)}
