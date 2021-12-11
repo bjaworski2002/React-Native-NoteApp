@@ -1,13 +1,13 @@
 import * as React from 'react';
-import {Text, View, StyleSheet, Dimensions, ScrollView, TouchableOpacity} from "react-native";
+import {Text, View, StyleSheet, Dimensions, ScrollView, TouchableOpacity, Alert} from "react-native";
 import {useKeys, useKeyUpdate} from "../KeyContext";
 import {useEffect, useState} from "react";
 import * as SecureStore from 'expo-secure-store';
 
 const getRandomBg = () => {
-    const red = Math.floor(Math.random() * 256/2)
-    const green = Math.floor(Math.random() * 256/2)
-    const blue = Math.floor(Math.random() * 256/2)
+    const red = Math.floor(Math.random() * 256 / 2)
+    const green = Math.floor(Math.random() * 256 / 2)
+    const blue = Math.floor(Math.random() * 256 / 2)
     return "rgb(" + red + ", " + green + ", " + blue + ")"
 }
 
@@ -15,15 +15,29 @@ const SingleNote = (props) => {
     const [values, setValues] = useState([])
     const [loading, setLoading] = useState(true)
     const [color, setColor] = useState("")
-
+    const keyUpdateTheme = useKeyUpdate()
+    const keyTheme = useKeys()
+    const RemoveHandle = () => {
+        Alert.alert("Czy chcesz usunąć tę notatkę?", values.header,[
+            {
+                text: "Yes",
+                onPress: async () => {
+                    keyUpdateTheme(props.id, "remove")
+                }
+            },
+            {
+                text: "No",
+            },
+        ])
+    }
     useEffect(async () => {
         const key = await SecureStore.getItemAsync(props.id)
         await setValues(JSON.parse(key))
         setLoading(false)
         await setColor(getRandomBg())
-    }, [])
+    }, [keyTheme])
     return (
-        <TouchableOpacity onPress={() => console.log(props.id)}>
+        <TouchableOpacity onLongPress={() => RemoveHandle()}>
             <View style={[styles.item, {backgroundColor: color}]}>
                 <View style={{flexDirection: 'row'}}>
                     <Text style={styles.text}>{new Date(parseInt(props.id)).getDate().toString()}</Text>
@@ -36,9 +50,9 @@ const SingleNote = (props) => {
         </TouchableOpacity>
     )
 }
+
 function Notes() {
     const keyTheme = useKeys()
-
     return (
         <ScrollView style={styles.container}>
             <View style={styles.innerContainer}>
@@ -47,6 +61,7 @@ function Notes() {
         </ScrollView>
     );
 }
+
 export default React.memo(Notes)
 
 const styles = StyleSheet.create({

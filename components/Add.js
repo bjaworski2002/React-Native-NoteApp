@@ -6,7 +6,7 @@ export default function Add() {
     const [header, setHeader] = useState("")
     const [text, setText] = useState("")
     const sendText = () => {
-        keyUpdateTheme(JSON.stringify({header: header, text: text}))
+        keyUpdateTheme(JSON.stringify({header: header, text: text}), "add")
         setHeader("")
         setText("")
         alert("Dodano notatkę!")
