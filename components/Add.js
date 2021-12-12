@@ -4,16 +4,16 @@ import React, {useContext, useEffect, useState} from 'react'
 import {KeyProvider, useKeys, useKeyUpdate} from "../KeyContext";
 
 export default function Add() {
-    const keyUpdateTheme = useKeyUpdate()
+    const keyTheme = useKeys()
     const [header, setHeader] = useState("")
     const [text, setText] = useState("")
     const sendText = () => {
-        keyUpdateTheme(JSON.stringify({header: header, text: text}), "add")
+        keyTheme.updateKey(JSON.stringify({header: header, text: text}), "add")
         setHeader("")
         setText("")
         alert("Dodano notatkę!")
     }
-    /*    useEffect(() => {
+    /*    useEffect(() => {R
             console.log(JSON.stringify({header: header, text: text}))
         }, [header, text])*/
     return (

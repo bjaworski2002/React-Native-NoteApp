@@ -21,8 +21,8 @@ const SingleNote = (props) => {
         Alert.alert("Czy chcesz usunąć tę notatkę?", values.header,[
             {
                 text: "Yes",
-                onPress: async () => {
-                    keyUpdateTheme(props.id, "remove")
+                onPress: () => {
+                    keyTheme.updateKey(props.id, "remove")
                 }
             },
             {
@@ -35,7 +35,7 @@ const SingleNote = (props) => {
         await setValues(JSON.parse(key))
         setLoading(false)
         await setColor(getRandomBg())
-    }, [keyTheme])
+    }, [keyTheme.keyList])
     return (
         <TouchableOpacity onLongPress={() => RemoveHandle()}>
             <View style={[styles.item, {backgroundColor: color}]}>
@@ -56,7 +56,7 @@ function Notes() {
     return (
         <ScrollView style={styles.container}>
             <View style={styles.innerContainer}>
-                {keyTheme.map((e, index) => <SingleNote key={index} id={e}/>)}
+                {keyTheme.keyList.map((e, index) => <SingleNote key={index} id={e}/>)}
             </View>
         </ScrollView>
     );

@@ -54,10 +54,8 @@ export function KeyProvider({children}) {
     }
 
     return (
-        <KeyContext.Provider value={keyList}>
-            <KeyUpdateContext.Provider value={(value, type) => updateKey(value, type)}>
-                {children}
-            </KeyUpdateContext.Provider>
+        <KeyContext.Provider value={{keyList: keyList, updateKey: (value, type) => updateKey(value, type)}}>
+            {children}
         </KeyContext.Provider>
     )
 }
