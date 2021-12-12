@@ -17,6 +17,7 @@ export function useKeyUpdate() {
 
 export function KeyProvider({children}) {
     const [keyList, setKeyList] = useState([])
+
     useEffect(async () => {
         const _keys = await SecureStore.getItemAsync("_ALL_KEYS")
         if (_keys) {
@@ -25,6 +26,7 @@ export function KeyProvider({children}) {
             await SecureStore.setItemAsync("_ALL_KEYS", JSON.stringify([]));
         }
     }, [])
+
     useEffect(async () => {
         const val = await SecureStore.getItemAsync("_ALL_KEYS");
         //console.log(val)
@@ -54,7 +56,10 @@ export function KeyProvider({children}) {
     }
 
     return (
-        <KeyContext.Provider value={{keyList: keyList, updateKey: (value, type) => updateKey(value, type)}}>
+        <KeyContext.Provider value={{
+            keyList: keyList,
+            updateKey: (value, type) => updateKey(value, type)
+        }}>
             {children}
         </KeyContext.Provider>
     )

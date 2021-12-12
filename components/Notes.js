@@ -15,7 +15,6 @@ const SingleNote = (props) => {
     const [values, setValues] = useState([])
     const [loading, setLoading] = useState(true)
     const [color, setColor] = useState("")
-    const keyUpdateTheme = useKeyUpdate()
     const keyTheme = useKeys()
     const RemoveHandle = () => {
         Alert.alert("Czy chcesz usunąć tę notatkę?", values.header,[
