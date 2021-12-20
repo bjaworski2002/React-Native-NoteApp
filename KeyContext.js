@@ -17,6 +17,7 @@ export function useKeyUpdate() {
 
 export function KeyProvider({children}) {
     const [keyList, setKeyList] = useState([])
+    const [categoriesList, setCategoriesList] = useState([])
 
     useEffect(async () => {
         const _keys = await SecureStore.getItemAsync("_ALL_KEYS")
@@ -25,6 +26,12 @@ export function KeyProvider({children}) {
         } else {
             await SecureStore.setItemAsync("_ALL_KEYS", JSON.stringify([]));
         }
+        const _categories = await SecureStore.getItemAsync("_ALL_CATEGORIES")
+        if (_categories) {
+            await setCategoriesList(JSON.parse(_categories))
+        } else {
+            await SecureStore.setItemAsync("_ALL_CATEGORIES", JSON.stringify(["psy", "koty"]));
+        }
     }, [])
 
     useEffect(async () => {
@@ -32,7 +39,11 @@ export function KeyProvider({children}) {
         //console.log(val)
     }, [keyList])
 
-    async function updateKey(value, type) {
+    async function updateCategory(value){
+        await SecureStore.setItemAsync("_ALL_CATEGORIES", JSON.stringify([...categoriesList, value]))
+        await setCategoriesList(categoriesList.concat(value))
+    }
+    async function updateKey(value, type, key) {
         try {
             //console.log(type)
             switch (type) {
@@ -49,6 +60,9 @@ export function KeyProvider({children}) {
                     await setKeyList(keyList.filter(a => a != value))
                     await SecureStore.setItemAsync("_ALL_KEYS", JSON.stringify([...keyList.filter(a => a != value)]))
                     break;
+                case "edit":
+                    await SecureStore.setItemAsync(key, value);
+                    break;
             }
         } catch (e) {
             console.log (e)
@@ -58,7 +72,9 @@ export function KeyProvider({children}) {
     return (
         <KeyContext.Provider value={{
             keyList: keyList,
-            updateKey: (value, type) => updateKey(value, type)
+            categoriesList: categoriesList,
+            updateKey: (value, type, key) => updateKey(value, type, key),
+            updateCategory: (value) => updateCategory(value)
         }}>
             {children}
         </KeyContext.Provider>
